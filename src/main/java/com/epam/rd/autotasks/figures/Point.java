@@ -18,9 +18,5 @@ class Point {
             return y;
         }
 
-        @java.lang.Override
-        public java.lang.String toString() {
-            return "(" + this.x + "," + this.y + ")";
-        }
     }
 

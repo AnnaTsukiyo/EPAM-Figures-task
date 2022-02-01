@@ -44,7 +44,6 @@ class Triangle extends Figure {
         return "(" + a.getX() + "," + a.getY() + ")" + "(" + b.getX() + "," + b.getY() + ")" + "(" + c.getX() + "," + c.getY() + ")";
 
     }
-
     @Override
     public String toString() {
         return Triangle.this + "[" + pointsToString() + "]";
