@@ -46,7 +46,7 @@ class Triangle extends Figure {
     }
     @Override
     public String toString() {
-        return Triangle.this + "[" + pointsToString() + "]";
+        return this.getClass().getSimpleName() + "[" + pointsToString() + "]";
     }
 
     @Override

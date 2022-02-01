@@ -14,17 +14,17 @@ class Circle extends Figure {
 
     @Override
     public double area() {
-        return Math.PI * Math.pow(radius, 2);
+        return Math.PI * Math.pow(radius,2);
     }
 
     @Override
     public String pointsToString() {
-        return "(" + centr.getX() + "," + centr.getY() + ")" + radius + ")";
+        return "(" + centr.getX() + "," + centr.getY() + ")";
     }
 
     @Override
     public String toString() {
-        return Circle.this + "[" + pointsToString() + "," + radius + "]";
+        return this.getClass().getSimpleName() + "[" + pointsToString() + "," + radius + "]";
     }
 
     @Override
@@ -32,3 +32,4 @@ class Circle extends Figure {
         return new Point(centr.getX() - radius, centr.getY());
     }
 }
+

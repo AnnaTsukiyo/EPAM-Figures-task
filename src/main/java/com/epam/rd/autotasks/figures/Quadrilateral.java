@@ -1,12 +1,11 @@
 package com.epam.rd.autotasks.figures;
 
 class Quadrilateral extends Figure {
-
     Point a;
     Point b;
     Point c;
     Point d;
-    private boolean isP4Inside;
+    private boolean isP4Inside;    // true - НЕвыпуклый . false - выпуклый private boolean  isP4Inside ;    // true - НЕвыпуклый . false - выпуклый
 
     public Quadrilateral(Point a, Point b, Point c, Point d) {
         calcIsPointInside(a, b, c, d);
@@ -17,7 +16,7 @@ class Quadrilateral extends Figure {
             this.c = c;
             this.d = d;
         } else {
-            System.out.println("Quadrilateral is non-convex");
+            throw new IllegalArgumentException("Quadrilateral is non-convex");
         }
     }
 
@@ -27,29 +26,15 @@ class Quadrilateral extends Figure {
 
     @Override
     public double area() {
-        Point a1, a2, a3, a4;
-        double s1, s2;
-        Triangle tr;
-
-        a1 = new Point(a.getX(), a.getY());
-        a2 = new Point(b.getX(), b.getY());
-        a3 = new Point(c.getX(), c.getY());
-        a4 = new Point(d.getX(), d.getY());
-
-        tr = new Triangle(a1, a2, a3);
-        s1 = tr.area();
-
-        tr = new Triangle(a1, a2, a4);
-        s2 = tr.area();
-
-        if (!isP4Inside) {
-            return s1 + s2;
-        } else {
-            return s1 - s2;
+        Point[] points = {a, b, c, d};
+        double sum = 0.0;
+        for (int i = 0; i < points.length - 1; ++i) {
+            sum += (points[i].getX() * points[i + 1].getY()) - (points[i + 1].getX() * points[i].getY());
         }
+        return Math.abs(sum / 2);
     }
 
-    private void calcIsPointInside(Point a, Point b, Point c, Point d) {
+    private void calcIsPointInside(Point a, Point b, Point c, Point d) {  // считаем внутри ли тр-ка p1-p2-p3 точка p4
 
         Triangle tr;
         Double s1, s2, s3, s4, delta;
@@ -66,7 +51,6 @@ class Quadrilateral extends Figure {
 
         delta = 1.0E-10;   // нужно учитывать погрешность вычисления
         isP4Inside = Math.abs(s1 - (s2 + s3 + s4)) < delta;
-
     }
 
     public String pointsToString() {
@@ -75,21 +59,24 @@ class Quadrilateral extends Figure {
 
     @Override
     public String toString() {
-        return Quadrilateral.this + "[" + pointsToString() + "]";
+        return this.getClass().getSimpleName() + "[" + pointsToString() + "]";
     }
 
     @Override
     public Point leftmostPoint() {
-        if ((a.getX() < b.getX()) && (a.getX() < c.getX()) && (a.getX() < d.getX())) {
-            return this.a;
+        Point mostUpperLeft = null;
+        Point[] points = {a, b, c, d};
+        for (Point point : points) {
+            if (mostUpperLeft == null) {
+                mostUpperLeft = point;
+            } else {
+                double diffX = mostUpperLeft.getX() - point.getX();
+                double diffY = point.getY() - mostUpperLeft.getY();
+                if (diffX + diffY > 0) {
+                    mostUpperLeft = point;
+                }
+            }
         }
-        if ((b.getX() < a.getX()) && (b.getX() < c.getX()) && (b.getX()) < d.getX()) {
-            return this.b;
-        }
-        if ((c.getX() < a.getX()) && (c.getX() < b.getX()) && (c.getX() < d.getX())) {
-            return this.c;
-        } else {
-            return this.d;
-        }
+        return mostUpperLeft;
     }
 }
