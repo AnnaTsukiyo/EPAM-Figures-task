@@ -44,6 +44,7 @@ class Triangle extends Figure {
         return "(" + a.getX() + "," + a.getY() + ")" + "(" + b.getX() + "," + b.getY() + ")" + "(" + c.getX() + "," + c.getY() + ")";
 
     }
+
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + "[" + pointsToString() + "]";
@@ -51,20 +52,18 @@ class Triangle extends Figure {
 
     @Override
     public Point leftmostPoint() {
-        Point mostUpperLeft = null;
         Point[] points = {a, b, c};
+        Point corner = null;
+        Integer d = null;
         for (Point point : points) {
-            if (mostUpperLeft == null) {
-                mostUpperLeft = point;
-            } else {
-                double diffX = mostUpperLeft.getX() - point.getX();
-                double diffY = point.getY() - mostUpperLeft.getY();
-                if (diffX + diffY > 0) {
-                    mostUpperLeft = point;
-                }
+            Integer diff = point.y - point.x;
+            if (d == null || (diff) > d) {
+                corner = point;
+                d = diff;
             }
         }
-        return mostUpperLeft;
+        return corner;
     }
 }
+
 

@@ -1,6 +1,7 @@
 package com.epam.rd.autotasks.figures;
 
 class Quadrilateral extends Figure {
+
     Point a;
     Point b;
     Point c;
@@ -9,14 +10,15 @@ class Quadrilateral extends Figure {
 
     public Quadrilateral(Point a, Point b, Point c, Point d) {
         calcIsPointInside(a, b, c, d);
-
         if (!isP4Inside) {
+
             this.a = a;
             this.b = b;
             this.c = c;
             this.d = d;
+            near_far_points(a, b, c, d);
         } else {
-            throw new IllegalArgumentException("Quadrilateral is non-convex");
+            System.out.println("Quadrilateral is non-convex");
         }
     }
 
@@ -26,6 +28,7 @@ class Quadrilateral extends Figure {
 
     @Override
     public double area() {
+
         Point a1, a2, a3, a4;
         double s1, s2;
         Triangle tr;
@@ -67,8 +70,37 @@ class Quadrilateral extends Figure {
         isP4Inside = Math.abs(s1 - (s2 + s3 + s4)) < delta;
     }
 
+    private void near_far_points(Point p1, Point p2, Point p3, Point p4) { //
+        double l_max;
+        p4.setNeighbor(p1);
+        l_max = p4.calcSide();
+        c = p1;
+        a = p2;
+        b = p3;
+        p4.setNeighbor(p2);
+        if (p4.calcSide() > l_max) ;
+        {
+            l_max = p4.calcSide();
+            c = p2;
+            a = p1;
+            b = p3;
+        }
+        p4.setNeighbor(p3);
+        if (p4.calcSide() > l_max) ;
+        {
+            c = p3;
+            a = p1;
+            b = p2;
+        }
+        a.setNeighbor(c);
+        c.setNeighbor(b);
+        b.setNeighbor(d);
+        d.setNeighbor(a);
+    }
+
     public String pointsToString() {
-        return "(" + a.getX() + "," + a.getY() + ")" + "(" + b.getX() + "," + b.getY() + ")" + c.getX() + "," + c.getY() + "(" + d.getX() + "," + d.getY() + ")";
+        return "(" + a.getX() + "," + a.getY() + ")" + "(" + b.getX() + "," + b.getY() + ")" + "("
+                + c.getX() + "," + c.getY() + ")" + "(" + d.getX() + "," + d.getY() + ")";
     }
 
     @Override
@@ -78,19 +110,16 @@ class Quadrilateral extends Figure {
 
     @Override
     public Point leftmostPoint() {
-        Point mostUpperLeft = null;
         Point[] points = {a, b, c, d};
+        Point corner = null;
+        Integer d = null;
         for (Point point : points) {
-            if (mostUpperLeft == null) {
-                mostUpperLeft = point;
-            } else {
-                double diffX = mostUpperLeft.getX() - point.getX();
-                double diffY = point.getY() - mostUpperLeft.getY();
-                if (diffX + diffY > 0) {
-                    mostUpperLeft = point;
-                }
+            Integer diff = point.y - point.x;
+            if (d == null || (diff) > d) {
+                corner = point;
+                d = diff;
             }
         }
-        return mostUpperLeft;
+        return corner;
     }
 }
