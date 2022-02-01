@@ -51,14 +51,20 @@ class Triangle extends Figure {
 
     @Override
     public Point leftmostPoint() {
-        if ((a.getX() < b.getX()) && (a.getX()) < (c.getX())) {
-            return this.a;
+        Point mostUpperLeft = null;
+        Point[] points = {a, b, c};
+        for (Point point : points) {
+            if (mostUpperLeft == null) {
+                mostUpperLeft = point;
+            } else {
+                double diffX = mostUpperLeft.getX() - point.getX();
+                double diffY = point.getY() - mostUpperLeft.getY();
+                if (diffX + diffY > 0) {
+                    mostUpperLeft = point;
+                }
+            }
         }
-        if ((b.getX() < a.getX()) && (b.getX() < c.getX())) {
-            return this.b;
-        } else {
-            return this.c;
-        }
+        return mostUpperLeft;
     }
 }
 

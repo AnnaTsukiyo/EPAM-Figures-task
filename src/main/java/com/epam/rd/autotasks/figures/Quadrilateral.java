@@ -26,12 +26,26 @@ class Quadrilateral extends Figure {
 
     @Override
     public double area() {
-        Point[] points = {a, b, c, d};
-        double sum = 0.0;
-        for (int i = 0; i < points.length - 1; ++i) {
-            sum += (points[i].getX() * points[i + 1].getY()) - (points[i + 1].getX() * points[i].getY());
+        Point a1, a2, a3, a4;
+        double s1, s2;
+        Triangle tr;
+
+        a1 = new Point(a.getX(), a.getY());   // p_near_1
+        a2 = new Point(b.getX(), b.getY());   // p_near_2
+        a3 = new Point(c.getX(), c.getY());         // p_far
+        a4 = new Point(d.getX(), d.getY());
+
+        tr = new Triangle(a1, a2, a3);
+        s1 = tr.area();
+
+        tr = new Triangle(a1, a2, a4);
+        s2 = tr.area();
+
+        if (!isP4Inside) {// НЕвыпуклый
+            return s1 + s2;
+        } else {             // выпуклый
+            return s1 - s2;
         }
-        return Math.abs(sum / 2);
     }
 
     private void calcIsPointInside(Point a, Point b, Point c, Point d) {  // считаем внутри ли тр-ка p1-p2-p3 точка p4
@@ -54,7 +68,7 @@ class Quadrilateral extends Figure {
     }
 
     public String pointsToString() {
-        return "(" + a.getX() + "," + a.getY() + ")" + "(" + b.getX() + "," + b.getY() + ")" + "(" + d.getX() + "," + d.getY() + ")";
+        return "(" + a.getX() + "," + a.getY() + ")" + "(" + b.getX() + "," + b.getY() + ")" + c.getX() + "," + c.getY() + "(" + d.getX() + "," + d.getY() + ")";
     }
 
     @Override
