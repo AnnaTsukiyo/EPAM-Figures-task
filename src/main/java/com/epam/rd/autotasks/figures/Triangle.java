@@ -49,7 +49,11 @@ class Triangle extends Figure {
     public String toString() {
         return this.getClass().getSimpleName() + "[" + pointsToString() + "]";
     }
-
+    Point centroidTriangle() {
+        double xx = (a.getX() + b.getX() + c.getX()) / 3;
+        double xy = (a.getY() + b.getY() + c.getY()) / 3;
+        return new Point(xx, xy);
+    }
     @Override
     public Point leftmostPoint() {
         Point mostUpperLeft = null;
