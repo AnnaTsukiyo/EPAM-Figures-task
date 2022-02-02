@@ -28,7 +28,7 @@ class Circle extends Figure {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + "[" + pointsToString() + "," + radius + "]";
+        return this.getClass().getSimpleName() + "[" + pointsToString() + radius + "]";
     }
 
     @Override

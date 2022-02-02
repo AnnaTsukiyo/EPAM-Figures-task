@@ -9,52 +9,25 @@ class Quadrilateral extends Figure {
     private boolean isP4Inside;    // true - НЕвыпуклый . false - выпуклый private boolean  isP4Inside ;    // true - НЕвыпуклый . false - выпуклый
 
     public Quadrilateral(Point a, Point b, Point c, Point d) {
-        calcIsPointInside(a, b, c, d);
-        if (!isP4Inside) {
-            this.a = a;
-            this.b = b;
-            this.c = c;
-            this.d = d;
-        } else {
-            System.out.println("Quadrilateral is non-convex");
+        if (a == null || b == null || c == null || d == null) {
+            throw new IllegalArgumentException();
         }
-    }
 
-    public boolean getIsP4Inside() {
-        return isP4Inside;
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d = d;
     }
 
     @Override
     public double area() {
-        Point a1, a2, a3, a4;
-        double s1, s2;
-        Triangle tr;
-
-        a1 = new Point(a.getX(), a.getY());   // p_near_1
-        a2 = new Point(b.getX(), b.getY());   // p_near_2
-        a3 = new Point(c.getX(), c.getY());         // p_far
-        a4 = new Point(d.getX(), d.getY());
-
-        tr = new Triangle(a1, a2, a3);
-        s1 = tr.area();
-
-        tr = new Triangle(a1, a2, a4);
-        s2 = tr.area();
-
-        if (!isP4Inside) {// НЕвыпуклый
-            return s1 + s2;
-        } else {             // выпуклый
-            return s1 - s2;
-        }
-    }
-
-    private void calcIsPointInside(Point a, Point b, Point c, Point d) {  // считаем внутри ли тр-ка p1-p2-p3 точка p4
-
+        boolean areaIs;
         Triangle tr;
         Double s1, s2, s3, s4, delta;
 
         tr = new Triangle(a, b, c);
         s1 = tr.area();
+
         tr = new Triangle(a, b, d);
         s2 = tr.area();
         tr = new Triangle(a, c, d);
@@ -63,7 +36,38 @@ class Quadrilateral extends Figure {
         s4 = tr.area();
 
         delta = 1.0E-10;   // нужно учитывать погрешность вычисления
-        isP4Inside = Math.abs(s1 - (s2 + s3 + s4)) < delta;
+        areaIs = Math.abs(s1 - (s2 + s3 + s4)) < delta;
+
+        if (!areaIs) {// НЕвыпуклый
+            return s1 + s3;
+        } else {             // выпуклый
+            return s2 + s4;
+        }
+    }
+
+    public Point centroid() {
+        Point gA = new Triangle(b, c, d).centroidTriangle();
+        Point gB = new Triangle(a, c, d).centroidTriangle();
+        Point gC = new Triangle(a, b, b).centroidTriangle();
+        Point gD = new Triangle(a, b, c).centroidTriangle();
+        return findIntersection(gA, gC, gB, gD);
+    }
+
+    public static Point findIntersection(Point l1s, Point l1e, Point l2s, Point l2e) {
+
+        double a1 = l1e.getY() - l1s.getY();
+        double b1 = l1s.getX() - l1e.getX();
+        double c1 = a1 * l1s.getX() + b1 * l1s.getY();
+
+        double a2 = l2e.getY() - l2s.getY();
+        double b2 = l2s.getX() - l2e.getX();
+        double c2 = a2 * l2s.getX() + b2 * l2s.getY();
+
+        double delta = a1 * b2 - a2 * b1;
+        if (delta == 0) {
+            return null;
+        }
+        return new Point((b2 * c1 - b1 * c2) / delta, (a1 * c2 - a2 * c1) / delta);
     }
 
     public String pointsToString() {
@@ -92,3 +96,6 @@ class Quadrilateral extends Figure {
         return mostUpperLeft;
     }
 }
+
+
+
