@@ -6,10 +6,14 @@ class Circle extends Figure {
     double radius;
 
     public Circle(Point centr, double radius) {
-        if (centr != null) {
+        if (centr == null) {
+            throw new IllegalArgumentException();
+        }
             this.centr = centr;
             this.radius = radius;
-        }
+        if (radius<=0){
+            throw new IllegalArgumentException();
+    }
     }
 
     @Override

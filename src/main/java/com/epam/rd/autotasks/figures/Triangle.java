@@ -52,17 +52,19 @@ class Triangle extends Figure {
 
     @Override
     public Point leftmostPoint() {
+        Point mostUpperLeft = null;
         Point[] points = {a, b, c};
-        Point corner = null;
-        Integer d = null;
+        int leftmost = 0;
         for (Point point : points) {
-            Integer diff = point.y - point.x;
-            if (d == null || (diff) > d) {
-                corner = point;
-                d = diff;
+            for (int i = 1; i < points.length; i++) {
+                points[i] = point;
+                if (points[i].getX() < points[leftmost].getX()) {
+                    leftmost = i;
+                    mostUpperLeft = points[i];
+                }
             }
         }
-        return corner;
+        return mostUpperLeft;
     }
 }
 

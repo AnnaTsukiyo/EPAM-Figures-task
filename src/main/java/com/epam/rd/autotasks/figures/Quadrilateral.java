@@ -6,7 +6,6 @@ class Quadrilateral extends Figure {
     Point b;
     Point c;
     Point d;
-    private Point neighbor;
     private boolean isP4Inside;    // true - НЕвыпуклый . false - выпуклый private boolean  isP4Inside ;    // true - НЕвыпуклый . false - выпуклый
 
     public Quadrilateral(Point a, Point b, Point c, Point d) {
@@ -56,7 +55,6 @@ class Quadrilateral extends Figure {
 
         tr = new Triangle(a, b, c);
         s1 = tr.area();
-
         tr = new Triangle(a, b, d);
         s2 = tr.area();
         tr = new Triangle(a, c, d);
@@ -81,14 +79,13 @@ class Quadrilateral extends Figure {
     public Point leftmostPoint() {
         Point mostUpperLeft = null;
         Point[] points = {a, b, c, d};
+        int leftmost = 0;
         for (Point point : points) {
-            if (mostUpperLeft == null) {
-                mostUpperLeft = point;
-            } else {
-                double diffX = mostUpperLeft.getX() - point.getX();
-                double diffY = point.getY() - mostUpperLeft.getY();
-                if (diffX + diffY > 0) {
-                    mostUpperLeft = point;
+            for (int i = 1; i < points.length; i++) {
+                points[i] = point;
+                if (points[i].getX() < points[leftmost].getX()) {
+                    leftmost = i;
+                    mostUpperLeft = points[i];
                 }
             }
         }
