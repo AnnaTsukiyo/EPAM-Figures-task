@@ -1,6 +1,5 @@
 package com.epam.rd.autotasks.figures;
 
-
 class Triangle extends Figure {
     private final Point point1;
     private final Point point2;
