@@ -9,19 +9,23 @@ class Circle extends Figure {
         this.radius = radius;
     }
 
+    @Override
     public double area() {
-        return 3.141592653589793D * Math.pow(this.radius, 2.0D);
+        return Math.PI * Math.pow(radius, 2);
     }
 
+    @Override
     public String pointsToString() {
-        return this.point.toString();
+        return point.toString();
     }
 
+    @Override
     public Point leftmostPoint() {
-        return new Point(this.point.getX() - this.radius, this.point.getY());
+        return new Point(point.getX() - radius, point.getY());
     }
 
+    @Override
     public String toString() {
-        return String.format("Circle[%s%s]", this.pointsToString(), this.radius);
+        return String.format("Circle[%s%s]", pointsToString(), radius);
     }
 }

@@ -1,8 +1,6 @@
 package com.epam.rd.autotasks.figures;
 
 abstract class Figure {
-    Figure() {
-    }
 
     public abstract double area();
 
@@ -10,8 +8,8 @@ abstract class Figure {
 
     public abstract Point leftmostPoint();
 
+    @Override
     public String toString() {
-        String var10000 = this.getClass().getSimpleName();
-        return var10000 + "[" + this.pointsToString() + "]";
+        return this.getClass().getSimpleName() + "[" + pointsToString() + "]";
     }
 }
