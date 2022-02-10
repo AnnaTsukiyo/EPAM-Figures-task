@@ -18,6 +18,9 @@ class Point {
         return y;
     }
 
+    public String toString() {
+        return String.format("(%s,%s)", this.x, this.y);
+    }
 
 }
 

@@ -1,39 +1,27 @@
 package com.epam.rd.autotasks.figures;
 
 class Circle extends Figure {
-    static final double PI = Math.PI;
-    Point centr;
-    double radius;
+    private final Point point;
+    private final double radius;
 
-    public Circle(Point centr, double radius) {
-        if (centr == null) {
-            throw new IllegalArgumentException();
-        }
-            this.centr = centr;
-            this.radius = radius;
-        if (radius<=0){
-            throw new IllegalArgumentException();
-    }
+    public Circle(Point point, double radius) {
+        this.point = point;
+        this.radius = radius;
     }
 
-    @Override
     public double area() {
-        return Math.PI * Math.pow(radius,2);
+        return 3.141592653589793D * Math.pow(this.radius, 2.0D);
     }
 
-    @Override
     public String pointsToString() {
-        return "(" + centr.getX() + "," + centr.getY() + ")";
+        return this.point.toString();
     }
 
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "[" + pointsToString() + radius + "]";
-    }
-
-    @Override
     public Point leftmostPoint() {
-        return new Point(centr.getX() - radius, centr.getY());
+        return new Point(this.point.getX() - this.radius, this.point.getY());
+    }
+
+    public String toString() {
+        return String.format("Circle[%s%s]", this.pointsToString(), this.radius);
     }
 }
-

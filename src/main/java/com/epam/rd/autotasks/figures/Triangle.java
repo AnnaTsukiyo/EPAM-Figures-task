@@ -1,75 +1,32 @@
 package com.epam.rd.autotasks.figures;
 
 class Triangle extends Figure {
+    private final Point point1;
+    private final Point point2;
+    private final Point point3;
 
-    Point a;
-    Point b;
-    Point c;
-
-    public Triangle(Point a, Point b, Point c) throws IllegalArgumentException {
-        if ((length1(a, b) >= length2(a, c) + length3(c, b)) || (length2(a, c) >= (length1(a, b) + length3(c, b))) || (length3(c, b)) >= length2(a, c) + (length1(a, b))) {
-            throw new IllegalArgumentException();
-        } else {
-            this.a = a;
-            this.b = b;
-            this.c = c;
-        }
+    public Triangle(Point point1, Point point2, Point point3) {
+        this.point1 = point1;
+        this.point2 = point2;
+        this.point3 = point3;
     }
 
-    double length1(Point a, Point b) {
-        double xDistanceSquare = Math.pow(a.getX() - b.getX(), 2);
-        double yDistanceSquare = Math.pow(a.getY() - b.getY(), 2);
-        return Math.sqrt(xDistanceSquare + yDistanceSquare);
-    }
-
-    double length2(Point a, Point c) {
-        double xDistanceSquare = Math.pow(a.getX() - c.getX(), 2);
-        double yDistanceSquare = Math.pow(a.getY() - c.getY(), 2);
-        return Math.sqrt(xDistanceSquare + yDistanceSquare);
-    }
-
-    double length3(Point c, Point b) {
-        double xDistanceSquare = Math.pow(c.getX() - b.getX(), 2);
-        double yDistanceSquare = Math.pow(c.getY() - b.getY(), 2);
-        return Math.sqrt(xDistanceSquare + yDistanceSquare);
-    }
-
-    @Override
     public double area() {
-        return Math.abs((b.getX() - a.getX()) * (c.getY() - a.getY()) - (c.getX() - a.getX()) * (b.getY() - a.getY())) / 2;
+        double operand1 = (this.point1.getX() - this.point3.getX()) * (this.point2.getY() - this.point3.getY());
+        double operand2 = (this.point2.getX() - this.point3.getX()) * (this.point1.getY() - this.point3.getY());
+        return Math.abs(operand1 - operand2) / 2.0D;
     }
-
 
     public String pointsToString() {
-        return "(" + a.getX() + "," + a.getY() + ")" + "(" + b.getX() + "," + b.getY() + ")" + "(" + c.getX() + "," + c.getY() + ")";
-
+        return String.format("%s%s%s", this.point1, this.point2, this.point3);
     }
 
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName() + "[" + pointsToString() + "]";
-    }
-    Point centroidTriangle() {
-        double xx = (a.getX() + b.getX() + c.getX()) / 3;
-        double xy = (a.getY() + b.getY() + c.getY()) / 3;
-        return new Point(xx, xy);
-    }
-    @Override
     public Point leftmostPoint() {
-        Point mostUpperLeft = null;
-        Point[] points = {a, b, c};
-        int leftmost = 0;
-        for (Point point : points) {
-            for (int i = 1; i < points.length; i++) {
-                points[i] = point;
-                if (points[i].getX() < points[leftmost].getX()) {
-                    leftmost = i;
-                    mostUpperLeft = points[i];
-                }
-            }
+        double minX = Math.min(this.point1.getX(), Math.min(this.point2.getX(), this.point3.getX()));
+        if (this.point1.getX() == minX) {
+            return this.point1;
+        } else {
+            return this.point2.getX() == minX ? this.point2 : this.point3;
         }
-        return mostUpperLeft;
     }
 }
-
-
